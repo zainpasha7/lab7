@@ -1,0 +1,80 @@
+import 'package:flutter/material.dart';
+import 'dart:async';
+
+void main() => runApp(ApiApp());
+
+class ApiApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'API Fetch UI',
+      theme: ThemeData(primarySwatch: Colors.teal),
+      home: ApiMockPage(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class ApiMockPage extends StatefulWidget {
+  @override
+  _ApiMockPageState createState() => _ApiMockPageState();
+}
+
+class _ApiMockPageState extends State<ApiMockPage> {
+  Map<String, String>? _data;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchMockData();
+  }
+
+  Future<void> _fetchMockData() async {
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      _data = {
+        'title': 'Mock API Title',
+        'body': 'This is a mock response that simulates data fetched from an API like JSONPlaceholder.'
+      };
+      _loading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Fetch Post")),
+      body: Center(
+        child: _loading
+            ? CircularProgressIndicator()
+            : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Card(
+                  elevation: 10,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          _data!['title'] ?? '',
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.teal),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          _data!['body'] ?? '',
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.justify,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+      ),
+    );
+  }
+}
