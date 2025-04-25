@@ -1,1 +1,63 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(LocalDbApp());
+
+class LocalDbApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Local DB Simulation',
+      theme: ThemeData(primarySwatch: Colors.deepOrange),
+      home: LocalDataPage(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class LocalDataPage extends StatefulWidget {
+  @override
+  _LocalDataPageState createState() => _LocalDataPageState();
+}
+
+class _LocalDataPageState extends State<LocalDataPage> {
+  List<String>? _items;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLocalData();
+  }
+
+  Future<void> _loadLocalData() async {
+    await Future.delayed(Duration(seconds: 2)); // Simulate DB fetch delay
+    setState(() {
+      _items = ['Apple', 'Banana', 'Orange', 'Mango'];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Local Data")),
+      body: _items == null
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              padding: EdgeInsets.all(16),
+              itemCount: _items!.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  color: Colors.deepOrange[50],
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  margin: EdgeInsets.symmetric(vertical: 8),
+                  child: ListTile(
+                    leading: Icon(Icons.fastfood, color: Colors.deepOrange),
+                    title: Text(_items![index], style: TextStyle(fontSize: 18)),
+                  ),
+                );
+              },
+            ),
+    );
+  }
+}
 
